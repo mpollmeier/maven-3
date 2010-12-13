@@ -363,15 +363,20 @@ public class MavenMetadataSource
             // direct dependency retains its scope
             effectiveScope = originalScope;
         }
-        else if ( Artifact.SCOPE_TEST.equals( originalScope ) || Artifact.SCOPE_PROVIDED.equals( originalScope ) )
+        else if ( Artifact.SCOPE_TEST.equals( originalScope ))
         {
-            // test and provided are not transitive, so exclude them
+            // test is not transitive, so exclude it
             effectiveScope = null;
         }
         else if ( Artifact.SCOPE_SYSTEM.equals( originalScope ) )
         {
             // system scope come through unchanged...
             effectiveScope = Artifact.SCOPE_SYSTEM;
+        }
+        else if ( Artifact.SCOPE_PROVIDED.equals( originalScope ))
+        {
+            // MNG-2205: provided scope must be inherited
+            effectiveScope = Artifact.SCOPE_PROVIDED;
         }
         else if ( Artifact.SCOPE_COMPILE.equals( originalScope ) && Artifact.SCOPE_COMPILE.equals( inheritedScope ) )
         {
